@@ -16,14 +16,13 @@ public class AlunoValidador {
     private String login;
     private String senha;
 
-    public AlunoValidador(Aluno aluno) {
-        this.nome = aluno.getNome();
-        this.email = aluno.getEmail();
-        this.idade = aluno.getIdade();
-        this.login = aluno.getLogin();
-        this.senha = aluno.getSenha();
-    }
-    
+    public AlunoValidador(String nome, String email, int idade, String login, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.login = login;
+        this.senha = senha;
+        this.idade = idade;
+    }    
     
     public boolean validarAluno(){
      
@@ -86,6 +85,15 @@ public class AlunoValidador {
         
         if(this.idade > 150 ){
             System.out.println("Idade tem que ser menor que 150.");
+            return false;
+        }
+        
+        Integer idade_ = this.idade;
+        String idadeStr = idade_.toString();
+        Pattern patternIdade = Pattern.compile("[a-z]");
+        Matcher matcherIdade = patternIdade.matcher(idadeStr);
+        if(matcherIdade.find()){
+            System.out.println("A idade não deve conter caracteres!");
             return false;
         }
         //-----------------------------------------

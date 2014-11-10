@@ -12,6 +12,4 @@ public class AlunoController {
         BancoDadosController insercaoBancoDados = new BancoDadosController();
         insercaoBancoDados.insertAluno(aluno);
     }
-    
-    
 }

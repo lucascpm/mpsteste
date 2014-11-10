@@ -62,7 +62,23 @@ public class Aluno{
         this.senha = senha;
     }
 
-    
+
+    //Método compareTo que compara os Alunos tomando como parâmetro suas idades
+      public int compareTo(Aluno that) {
+        final int BEFORE = -1;
+        final int EQUAL = 0;
+        final int AFTER = 1;
+
+        if ( this == that ) return EQUAL;
+
+        //comparação para idade
+        if (this.idade < that.idade) return BEFORE;
+        if (this.idade > that.idade) return AFTER;
+
+        assert this.equals(that) : "compareTo inconsistent with equals.";
+
+        return EQUAL;
+  }
 
     
     
