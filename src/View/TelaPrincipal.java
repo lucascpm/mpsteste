@@ -97,14 +97,6 @@ public class TelaPrincipal {
         
         AlunoValidador validador = new AlunoValidador(novoAluno);
         
-//        try{
-//            validador.validarAluno();
-//            AlunoController alunoController = new AlunoController();
-//            alunoController.inserirAluno(novoAluno);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-        
         if(validador.validarAluno()){
             AlunoController alunoController = new AlunoController();
             alunoController.inserirAluno(novoAluno);
