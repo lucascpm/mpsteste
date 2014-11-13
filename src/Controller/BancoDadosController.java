@@ -20,19 +20,27 @@ import java.util.Map;
 public class BancoDadosController { 
 
     public static Map<Integer,Aluno> alunos = new HashMap<Integer,Aluno>();
-//    public static int key = alunos.keySet().size(); 
     
     //------------- ALUNOS --------------------------------------
     public boolean insertAluno(Aluno novoAluno) throws AlunoException {
+        
+        //Aqui são capturadas as exceções geradas pelo AlunoValidador.
         try {
             //Validação dos campos do novo aluno
             AlunoValidador.validarAluno(novoAluno);
             
-            //Adiciona na coleção
-            //a Key sempre será um número após o último elemento adicionado (0 based)
-            alunos.put( alunos.keySet().size(), novoAluno);
+            //A key do próximo aluno a ser inserido é igual a
+            //key do último aluno adicionado +1.
+            int novaKey = 0;
+            for (int key : BancoDadosController.alunos.keySet()) {
+                novaKey = key;
+            }
             
-            //Gravando novo Objeto Aluno no Arquivo "alunos.ser'
+            //Adiciona na coleção.
+            //A Key sempre será um número após o último elemento adicionado (0 based)
+            alunos.put( novaKey+1, novoAluno);
+            
+            //Grava a lista novamente, só que agora com o novo Objeto Aluno no Arquivo "alunos.ser'
             FileOutputStream fOut = new FileOutputStream("alunos.ser");
             ObjectOutputStream oOut = new ObjectOutputStream(fOut);
             oOut.writeObject(alunos);
@@ -50,6 +58,65 @@ public class BancoDadosController {
         }
         return false;
     }
+    
+    public boolean editAluno(int key, Aluno novoAluno) throws AlunoException {
+        
+        //Aqui são capturadas as exceções geradas pelo AlunoValidador.
+        try {
+            //Validação dos campos do novo aluno
+            AlunoValidador.validarAluno(novoAluno);
+            
+            //Adiciona na coleção.
+            //A Key sempre será um número após o último elemento adicionado (0 based)
+            alunos.put( key, novoAluno);
+            
+            //Gravando novo Objeto Aluno no Arquivo "alunos.ser'
+            FileOutputStream fOut = new FileOutputStream("alunos.ser");
+            ObjectOutputStream oOut = new ObjectOutputStream(fOut);
+            oOut.writeObject(alunos);
+            oOut.close();
+            fOut.close();
+            System.out.printf("Conteúdo atualizado com sucesso no arquivo 'alunos.ser'");
+            
+            return true;
+        }catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean removeAluno(int key) throws AlunoException {
+        
+        //Aqui são capturadas as exceções geradas pelo AlunoValidador.
+        try {
+            //Remove da coleção.
+            //A Key do aluno a ser removido
+            alunos.remove(key);
+            
+            //Gravando Mapa atualizado(depois da remoção) no Arquivo "alunos.ser'
+            FileOutputStream fOut = new FileOutputStream("alunos.ser");
+            ObjectOutputStream oOut = new ObjectOutputStream(fOut);
+            oOut.writeObject(alunos);
+            oOut.close();
+            fOut.close();
+            System.out.printf("Conteúdo removido com sucesso no arquivo 'alunos.ser'");
+            
+            return true;
+        }catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
     
     public Map<Integer, Aluno> sortByComparator(Map<Integer, Aluno> unsortMap) {
  
