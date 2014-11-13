@@ -1,12 +1,12 @@
 package Model;
 
-import java.util.Calendar;
+import java.io.Serializable;
 
 /**
  *
  * @author Lucas
  */
-public class Aluno{
+public class Aluno implements Serializable{
 
     private String nome;
     private String email;

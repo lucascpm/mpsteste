@@ -9,8 +9,16 @@ import Controller.AlunoException;
 import Controller.AlunoValidador;
 import Controller.BancoDadosController;
 import Model.Aluno;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TelaPrincipal { 
@@ -18,28 +26,24 @@ public class TelaPrincipal {
     public static void main(String args[]) throws SQLException { 
         TelaPrincipal telaPrincipal = new TelaPrincipal();
         
-        //Gerando conteúdo para testes:
-        AlunoController alunoController = new AlunoController();
-        Aluno novoAluno1 = new Aluno("LucasS    ", "Email@email.com", 27, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno1);
-        Aluno novoAluno12 = new Aluno("VictorH  ", "Email@email.com", 32, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno12);
-        Aluno novoAluno13 = new Aluno("RennanT  ", "Email@email.com", 91, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno13);
-        Aluno novoAluno14 = new Aluno("Raoni    ", "Email@email.com", 78, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno14);
-        Aluno novoAluno15 = new Aluno("Hamilton ", "Email@email.com", 7, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno15);
-        Aluno novoAluno16 = new Aluno("Álvaro   ", "Email@email.com", 1, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno16);
-        Aluno novoAluno17 = new Aluno("DaniRousy", "Email@email.com", 9, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno17);
-        Aluno novoAluno18 = new Aluno("Hinojosa ", "Email@email.com", 3, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno18);
-        Aluno novoAluno19 = new Aluno("TiagoM   ", "Email@email.com", 47, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno19);
-        Aluno novoAluno10 = new Aluno("Bidu     ", "Email@email.com", 10, "loginLogin", "senha123");
-        alunoController.inserirAluno(novoAluno10);
+        //Carregando conteúdo do arquivo
+        try {
+         FileInputStream fis = new FileInputStream("alunos.ser");
+         ObjectInputStream ois = new ObjectInputStream(fis);
+         
+         BancoDadosController.alunos = (Map<Integer,Aluno>) ois.readObject();
+         
+         ois.close();
+         fis.close();
+        }catch(IOException ioe){
+           ioe.printStackTrace();
+           return;
+        }catch(ClassNotFoundException c){
+           System.out.println("Class not found");
+           c.printStackTrace();
+           return;
+        }
+        System.out.println("---Conteúdo carregado com sucesso---");
         
         telaPrincipal.menuInicial();
         System.out.println("");
@@ -83,7 +87,6 @@ public class TelaPrincipal {
         while (!resposta.trim().equals("0"));
     }
 
-    
     public void inserirAlunos(){
         String nome;
         int idade;
@@ -119,16 +122,6 @@ public class TelaPrincipal {
         catch (InputMismatchException e) {
             System.out.println("A idade não pode conter caracteres.");
         }
-
-        
-        //Verifica se todas as entradas são válidas com o Validador
-//        if(validador.validarAluno()){
-//            Aluno novoAluno = new Aluno(nome, email, idade_, login, senha);
-//            AlunoController alunoController = new AlunoController();
-//            alunoController.inserirAluno(novoAluno);
-//        }
-        
-        
 }
     
     public void listarAlunos(){
@@ -143,7 +136,7 @@ public class TelaPrincipal {
         System.out .println("______________________________________________________________________");
     }
     
-        public void listarAlunosOrdenados(){
+    public void listarAlunosOrdenados(){
         System.out .println("______________________________________________________________________");
         System.out.println("CHAVE--NOME-------------EMAIL------IDADE---LOGIN-------SENHA");
         

@@ -5,6 +5,9 @@ package Controller;
  * @author Lucas
  */
 import Model.Aluno;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,16 +20,32 @@ import java.util.Map;
 public class BancoDadosController { 
 
     public static Map<Integer,Aluno> alunos = new HashMap<Integer,Aluno>();
-    public static int alunosKey = 0;
+//    public static int key = alunos.keySet().size(); 
     
     //------------- ALUNOS --------------------------------------
     public boolean insertAluno(Aluno novoAluno) throws AlunoException {
-        try { 
+        try {
+            //Validação dos campos do novo aluno
             AlunoValidador.validarAluno(novoAluno);
-            alunos.put( alunosKey, novoAluno);
-            BancoDadosController.alunosKey++;
+            
+            //Adiciona na coleção
+            //a Key sempre será um número após o último elemento adicionado (0 based)
+            alunos.put( alunos.keySet().size(), novoAluno);
+            
+            //Gravando novo Objeto Aluno no Arquivo "alunos.ser'
+            FileOutputStream fOut = new FileOutputStream("alunos.ser");
+            ObjectOutputStream oOut = new ObjectOutputStream(fOut);
+            oOut.writeObject(alunos);
+            oOut.close();
+            fOut.close();
+            System.out.printf("Conteúdo salvo com sucesso no arquivo 'alunos.ser'");
+            
             return true;
-        } catch (Exception e) {
+        }catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return false;
