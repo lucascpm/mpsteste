@@ -8,142 +8,111 @@ import java.util.regex.Pattern;
  *
  * @author Lucas
  */
-public class AlunoValidador {
+public class AlunoValidador{
     
-    private String nome;
-    private String email;
-    private int idade = 0;
-    private String login;
-    private String senha;
-
-    public AlunoValidador(String nome, String email, int idade, String login, String senha) {
-        this.nome = nome;
-        this.email = email;
-        this.login = login;
-        this.senha = senha;
-        this.idade = idade;
-    }    
-    
-    public boolean validarAluno(){
+    public static void validarAluno(Aluno aluno) throws AlunoException{
      
         //Nenhum campo pode ser vazio
-        if(this.nome.equals("") || this.email.equals("") || this.idade == 0 || this.login.equals("") || this.senha.equals("")){
-            System.out.println("Nenhum campo pode ficar em branco!");
-            return false;
+        if(aluno.getNome().equals("") || aluno.getEmail().equals("") || aluno.getIdade() == 0 || aluno.getLogin().equals("") || aluno.getSenha().equals("")){
+            throw new AlunoException("Nenhum campo pode ficar em branco!");
         }
         
         //---CAMPO NOME----------------------------
-        if(this.nome.length() < 6 ){
-            System.out.println("Nome muito pequeno.");
-            return false;
+        if(aluno.getNome().length() < 6 ){
+            throw new AlunoException("Nome muito pequeno.");
         }
         
-        if(this.nome.length() > 300 ){
-            System.out.println("Nome muito comprido.");
-            return false;
+        if(aluno.getNome().length() > 300 ){
+            throw new AlunoException("Nome muito comprido.");
         }
         
         Pattern pattern = Pattern.compile("[0-9]");
-        Matcher matcher = pattern.matcher(this.nome);
+        Matcher matcher = pattern.matcher(aluno.getNome());
         if(matcher.find()){
-            System.out.println("O nome não deve conter números!");
-            return false;
+            throw new AlunoException("O nome não deve conter números!");
         }
         //-----------------------------------------
         
         //---CAMPO E-mail----------------------------
-        if(this.nome.length() > 300 ){
-            System.out.println("Nome muito comprido.");
+        if(aluno.getEmail().length() > 300 ){
+            throw new AlunoException("Nome muito comprido.");
         }
         
         Pattern pattern2 = Pattern.compile("[@]");
-        Matcher matcher2 = pattern2.matcher(this.email);
+        Matcher matcher2 = pattern2.matcher(aluno.getEmail());
         if(!matcher2.find()){
-            System.out.println("O e-mail deve conter um @!");
-            return false;
+            throw new AlunoException("O e-mail deve conter um @!");
         }
         
-        boolean inicio = this.email.substring(0, 1).contains("@");
+        boolean inicio = aluno.getEmail().substring(0, 1).contains("@");
         if(inicio){
-            System.out.println("E-mail nao pode comecar com @!");
-            return false;
+            throw new AlunoException("E-mail nao pode comecar com @!");
         }
             
         
-        boolean fim = this.email.substring(this.email.length()-1, this.email.length()).contains("@");
+        boolean fim = aluno.getEmail().substring(aluno.getEmail().length()-1, aluno.getEmail().length()).contains("@");
         if(fim){
-            System.out.println("E-mail nao pode terminar com @!");
-            return false;
+            throw new AlunoException("E-mail nao pode terminar com @!");
         }
         //-----------------------------------------
         
         //---CAMPO IDADE----------------------------
-        if(this.idade < 0 ){
-            System.out.println("Idade tem que ser maior que 0.");
-            return false;
+        if(aluno.getIdade() < 0 ){
+            throw new AlunoException("Idade tem que ser maior que 0.");
         }
         
-        if(this.idade > 150 ){
-            System.out.println("Idade tem que ser menor que 150.");
-            return false;
+        if(aluno.getIdade() > 150 ){
+            throw new AlunoException("Idade tem que ser menor que 150.");
         }
         
-        Integer idade_ = this.idade;
+        Integer idade_ = aluno.getIdade();
         String idadeStr = idade_.toString();
         Pattern patternIdade = Pattern.compile("[a-z]");
         Matcher matcherIdade = patternIdade.matcher(idadeStr);
         if(matcherIdade.find()){
-            System.out.println("A idade não deve conter caracteres!");
-            return false;
+            throw new AlunoException("A idade não deve conter caracteres!");
         }
         //-----------------------------------------
         
         //---CAMPO LOGIN----------------------------
-        if(this.nome.length() > 20 ){
-            System.out.println("Login nao pode ter mais que 20 caracteres.");
-            return false;
+        if(aluno.getLogin().length() > 20 ){
+            throw new AlunoException("Login nao pode ter mais que 20 caracteres");
         }
         
         Pattern pattern3 = Pattern.compile("[0-9]");
-        Matcher matcher3 = pattern3.matcher(this.login);
+        Matcher matcher3 = pattern3.matcher(aluno.getLogin());
         if(matcher3.find()){
-            System.out.println("O login não deve conter números!");
-            return false;
+            throw new AlunoException("O login não deve conter números!");
         }
         //-----------------------------------------
         
         //---CAMPO LOGIN----------------------------
-        if(this.senha.length() > 100 ){
-            System.out.println("Senha nao pode ter mais que 100 caracteres.");
-            return false;
+        if(aluno.getSenha().length() > 100 ){
+            throw new AlunoException("Senha nao pode ter mais que 100 caracteres.");
         }
         
-        if(this.senha.length() < 8 ){
-            System.out.println("Senha nao pode ter menos que 8 caracteres.");
-            return false;
+        if(aluno.getSenha().length() < 8 ){
+            throw new AlunoException("Senha nao pode ter menos que 8 caracteres.");
         }
         
         int digitosSenha = 0;
-        for (int i=0; i<this.senha.length(); i++) {  
-            char c = this.senha.charAt(i);
+        for (int i=0; i<aluno.getSenha().length(); i++) {  
+            char c = aluno.getSenha().charAt(i);
             if(Character.isDigit(c))
                 digitosSenha ++;
          }
         
         if(digitosSenha < 2){
-            System.out.println("Senha deve conter, no mínimo, dois números");
-            return false;
+            throw new AlunoException("Senha deve conter, no mínimo, dois números");
         }
        
         Pattern patternSenha = Pattern.compile("[a-z]");
-        Matcher matcherSenha = patternSenha.matcher(this.senha);
+        Matcher matcherSenha = patternSenha.matcher(aluno.getSenha());
         if(!matcherSenha.find()){
-            System.out.println("A senha deve conter caracteres!");
-            return false;
+            throw new AlunoException("A senha deve conter caracteres!");
         }
         //-----------------------------------------
         
-        return true;
     }
     
     

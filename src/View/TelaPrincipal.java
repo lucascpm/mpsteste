@@ -5,10 +5,12 @@ package View;
  * @author Lucas
  */
 import Controller.AlunoController; 
+import Controller.AlunoException;
 import Controller.AlunoValidador;
 import Controller.BancoDadosController;
 import Model.Aluno;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TelaPrincipal { 
@@ -84,35 +86,47 @@ public class TelaPrincipal {
     
     public void inserirAlunos(){
         String nome;
-        String idade;
+        int idade;
         String email;
         String senha;
         String login;
+        try {
+            System.out .println("______________________________________________________________________");
+            System.out.println("Nome: ");
+            nome = in.next();
+            System.out.println("E-mail: ");
+            email = in.next();
+            System.out.println("idade: ");
+            idade = in.nextInt();
+            System.out.println("Senha: ");
+            senha = in.next();
+            System.out.println("Login: ");
+            login = in.next();
 
-        System.out .println("______________________________________________________________________");
-        System.out.println("Nome: ");
-        nome = in.next();
-        System.out.println("E-mail: ");
-        email = in.next();
-        System.out.println("idade: ");
-        idade = in.next();
-        System.out.println("Senha: ");
-        senha = in.next();
-        System.out.println("Login: ");
-        login = in.next();
-       
-        
-        System.out .println("______________________________________________________________________");
-        int idade_ = Integer.parseInt(idade);
-        
-        AlunoValidador validador = new AlunoValidador(nome, email, idade_, login, senha);
+
+            System.out .println("______________________________________________________________________");
+
+
+            Aluno novoAluno = new Aluno(nome, email, idade, login, senha);
+            BancoDadosController bd = new BancoDadosController();
+
+
+            AlunoValidador.validarAluno(novoAluno);
+            bd.insertAluno(novoAluno);
+        } catch (AlunoException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (InputMismatchException e) {
+            System.out.println("A idade não pode conter caracteres.");
+        }
+
         
         //Verifica se todas as entradas são válidas com o Validador
-        if(validador.validarAluno()){
-            Aluno novoAluno = new Aluno(nome, email, idade_, login, senha);
-            AlunoController alunoController = new AlunoController();
-            alunoController.inserirAluno(novoAluno);
-        }
+//        if(validador.validarAluno()){
+//            Aluno novoAluno = new Aluno(nome, email, idade_, login, senha);
+//            AlunoController alunoController = new AlunoController();
+//            alunoController.inserirAluno(novoAluno);
+//        }
         
         
 }

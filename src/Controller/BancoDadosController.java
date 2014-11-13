@@ -20,11 +20,11 @@ public class BancoDadosController {
     public static int alunosKey = 0;
     
     //------------- ALUNOS --------------------------------------
-    public boolean insertAluno(Aluno novoAluno) {
+    public boolean insertAluno(Aluno novoAluno) throws AlunoException {
         try { 
-
-             alunos.put( alunosKey, novoAluno);
-             BancoDadosController.alunosKey++;
+            AlunoValidador.validarAluno(novoAluno);
+            alunos.put( alunosKey, novoAluno);
+            BancoDadosController.alunosKey++;
             return true;
         } catch (Exception e) {
             e.printStackTrace();
