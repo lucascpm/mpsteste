@@ -4,19 +4,14 @@ package View;
  *
  * @author Lucas
  */
-import Controller.AlunoController; 
 import Controller.AlunoException;
 import Controller.AlunoValidador;
 import Controller.BancoDadosController;
 import Model.Aluno;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
@@ -216,9 +211,9 @@ public class TelaPrincipal {
         int contador = 0;
         for (int key : BancoDadosController.alunos.keySet()) { 
             //Capturamos o valor a partir da chave 
-            Aluno aluno = BancoDadosController.alunos.get(key); 
+            Aluno aluno = BancoDadosController.alunos.get(key);
             
-            if(aluno.getEmail()== email){
+            if(aluno.getEmail().equalsIgnoreCase(email)){
                 System.out.println("   " + key + " - " + aluno.getNome()+ " - " + aluno.getEmail()+ " - " + aluno.getIdade() + " - " + aluno.getLogin() + " - " + aluno.getSenha());
                 contador++;
             }                
@@ -241,7 +236,7 @@ public class TelaPrincipal {
             //Capturamos o valor a partir da chave 
             Aluno aluno = BancoDadosController.alunos.get(key); 
             
-            if(aluno.getNome()== nome){
+            if(aluno.getNome().equalsIgnoreCase(nome)){
                 System.out.println("   " + key + " - " + aluno.getNome()+ " - " + aluno.getEmail()+ " - " + aluno.getIdade() + " - " + aluno.getLogin() + " - " + aluno.getSenha());
                 contador++;
             }                
